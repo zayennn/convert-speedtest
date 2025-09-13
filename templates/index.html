@@ -127,7 +127,6 @@
         )}`;
       }
 
-      // Panggil backend Flask
       async function runSpeedtest() {
         const button = document.getElementById("retest-btn");
         button.disabled = true;
@@ -137,7 +136,6 @@
           const response = await fetch("/speedtest");
           const data = await response.json();
 
-          // Reset dulu
           document.getElementById("download-mbps").textContent = "0";
           document.getElementById("upload-mbps").textContent = "0";
           document.getElementById("ping-ms").textContent = "0";
@@ -156,12 +154,10 @@
         }
       }
 
-      // Auto run saat pertama kali load
       document.addEventListener("DOMContentLoaded", () => {
         runSpeedtest();
       });
 
-      // Klik tombol = tes ulang
       document
         .getElementById("retest-btn")
         .addEventListener("click", runSpeedtest);
