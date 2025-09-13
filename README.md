@@ -65,6 +65,3 @@ Ada beberapa alasan kenapa kecepatan unduh yang lo lihat di aplikasi/game kadang
    - Kalau ada banyak device lain yang juga pakai internet (streaming, upload, download), kecepatan unduh akan terbagi.
 
 ---
-
-git clone https://github.com/username/speedtest-app.git
-cd speedtest-app
