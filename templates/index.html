@@ -113,14 +113,11 @@
         }, 16);
       }
 
-      // Fungsi untuk menampilkan data speedtest
       function displaySpeedtestData(data) {
-        // Animasikan nilai Mbps
         animateValue("download-mbps", data.download_mbps);
         animateValue("upload-mbps", data.upload_mbps);
-        animateValue("ping-ms", data.ping_ms, 1000, ""); // Ping lebih cepat
+        animateValue("ping-ms", data.ping_ms, 1000, "");
 
-        // Hitung dan tampilkan nilai MB/s (tanpa animasi untuk menghindari kompleksitas)
         const downloadMBs = mbpsToMBs(data.download_mbps);
         const uploadMBs = mbpsToMBs(data.upload_mbps);
 
@@ -130,7 +127,6 @@
         document.getElementById("upload-mbs").textContent = `≈ ${uploadMBs}`;
       }
 
-      // Fungsi untuk memanggil endpoint backend
       async function runSpeedtest() {
         const button = document.getElementById("retest-btn");
         button.disabled = true;
@@ -140,14 +136,12 @@
           const response = await fetch("/speedtest");
           const data = await response.json();
 
-          // Reset nilai sebelum menampilkan yang baru
           document.getElementById("download-mbps").textContent = "0";
           document.getElementById("upload-mbps").textContent = "0";
           document.getElementById("ping-ms").textContent = "0";
           document.getElementById("download-mbs").textContent = "0";
           document.getElementById("upload-mbs").textContent = "0";
 
-          // Tampilkan data baru dengan animasi
           setTimeout(() => {
             displaySpeedtestData(data);
           }, 100);
