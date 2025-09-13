@@ -13,7 +13,7 @@ def test_ping():
     try:
         st = speedtest.Speedtest()
         st.get_best_server()
-        ping_result = st.results.ping  # ping ms
+        ping_result = st.results.ping
         return jsonify({"ping_ms": round(ping_result, 2)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -24,7 +24,7 @@ def test_download():
     try:
         st = speedtest.Speedtest()
         st.get_best_server()
-        download_speed = st.download() / 1_000_000  # Mbps
+        download_speed = st.download() / 1_000_000
         return jsonify({"download_mbps": round(download_speed, 2)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -35,7 +35,7 @@ def test_upload():
     try:
         st = speedtest.Speedtest()
         st.get_best_server()
-        upload_speed = st.upload() / 1_000_000  # Mbps
+        upload_speed = st.upload() / 1_000_000
         return jsonify({"upload_mbps": round(upload_speed, 2)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
