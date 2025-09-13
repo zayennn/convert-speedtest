@@ -66,6 +66,10 @@
           </div>
           <div id="speed-unit" class="text-xl text-gray-600">Mbps</div>
           <div id="conversion-value" class="mt-4 text-gray-600 hidden"></div>
+          <div
+            id="provider-info"
+            class="text-center text-gray-600 mt-4 hidden"
+          ></div>
         </div>
       </div>
 
@@ -134,6 +138,7 @@
         TESTING_PING: "testing_ping",
         TESTING_DOWNLOAD: "testing_download",
         TESTING_UPLOAD: "testing_upload",
+        TESTING_PROVIDER: "testing_provider",
         COMPLETED: "completed",
       };
       let currentStatus = testStatus.NOT_STARTED;
@@ -173,7 +178,12 @@
           case testStatus.TESTING_UPLOAD:
             document.getElementById("current-test").textContent =
               "Sedang mengukur Upload...";
-            updateProgress(80);
+            updateProgress(75);
+            break;
+          case testStatus.TESTING_PROVIDER:
+            document.getElementById("current-test").textContent =
+              "Mengambil informasi ISP...";
+            updateProgress(90);
             break;
           case testStatus.COMPLETED:
             document.getElementById("current-test").textContent =
@@ -184,6 +194,7 @@
             break;
         }
       }
+
       function animateValue(
         elementId,
         targetValue,
@@ -212,12 +223,14 @@
         document.getElementById("start-btn").disabled = true;
         document.getElementById("start-btn").classList.remove("pulse");
         try {
+          // PING
           setTestStatus(testStatus.TESTING_PING);
           const pingRes = await fetch("/speedtest/ping");
           const pingData = await pingRes.json();
           updateNeedle(pingData.ping_ms, 100, "ms");
           animateValue("ping-ms", pingData.ping_ms, 1000, "", true);
 
+          // DOWNLOAD
           setTestStatus(testStatus.TESTING_DOWNLOAD);
           const dlRes = await fetch("/speedtest/download");
           const dlData = await dlRes.json();
@@ -226,6 +239,7 @@
           document.getElementById("download-mbs").textContent =
             "≈ " + mbpsToMBs(dlData.download_mbps);
 
+          // UPLOAD
           setTestStatus(testStatus.TESTING_UPLOAD);
           const ulRes = await fetch("/speedtest/upload");
           const ulData = await ulRes.json();
@@ -234,16 +248,26 @@
           document.getElementById("upload-mbs").textContent =
             "≈ " + mbpsToMBs(ulData.upload_mbps);
 
+          // PROVIDER INFO
+          setTestStatus(testStatus.TESTING_PROVIDER);
+          const provRes = await fetch("/speedtest/provider");
+          const provData = await provRes.json();
+
+          // TAMPILKAN SEMUA HASIL
           document.getElementById("conversion-value").innerHTML = `
-            <div class="fade-in">
-              <p><strong>Download:</strong> ${dlData.download_mbps.toFixed(
-                2
-              )} Mbps ≈ ${mbpsToMBs(dlData.download_mbps)} MB/s</p>
-              <p><strong>Upload:</strong> ${ulData.upload_mbps.toFixed(
-                2
-              )} Mbps ≈ ${mbpsToMBs(ulData.upload_mbps)} MB/s</p>
-              <p><strong>Ping:</strong> ${Math.round(pingData.ping_ms)} ms</p>
-            </div>`;
+        <div class="fade-in">
+          <p><strong>Download:</strong> ${dlData.download_mbps.toFixed(
+            2
+          )} Mbps ≈ ${mbpsToMBs(dlData.download_mbps)} MB/s</p>
+          <p><strong>Upload:</strong> ${ulData.upload_mbps.toFixed(
+            2
+          )} Mbps ≈ ${mbpsToMBs(ulData.upload_mbps)} MB/s</p>
+          <p><strong>Ping:</strong> ${Math.round(pingData.ping_ms)} ms</p>
+          <p><strong>ISP:</strong> ${provData.isp}</p>
+          <p><strong>Server:</strong> ${provData.server.name}, ${
+            provData.server.country
+          } (${provData.server.sponsor})</p>
+        </div>`;
           document
             .getElementById("conversion-value")
             .classList.remove("hidden");
@@ -257,9 +281,11 @@
         }
       }
 
+      // Event Listener
       document
         .getElementById("start-btn")
         .addEventListener("click", runSpeedtest);
+
       document.getElementById("retest-btn").addEventListener("click", () => {
         document.getElementById("download-mbps").textContent = "-";
         document.getElementById("upload-mbps").textContent = "-";
