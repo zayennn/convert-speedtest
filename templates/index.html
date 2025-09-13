@@ -27,9 +27,7 @@
     class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4"
   >
     <div class="container max-w-4xl mx-auto">
-      <h1
-        class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-2"
-      >
+      <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-2">
         Speedtest Sederhana
       </h1>
       <p class="text-center text-gray-600 mb-8">
@@ -63,10 +61,7 @@
         </div>
 
         <div class="text-center">
-          <div
-            id="speed-value"
-            class="text-5xl font-bold text-primary mb-2"
-          >
+          <div id="speed-value" class="text-5xl font-bold text-primary mb-2">
             0
           </div>
           <div id="speed-unit" class="text-xl text-gray-600">Mbps</div>
@@ -81,9 +76,7 @@
         >
           <h2 class="text-xl font-semibold text-gray-700 mb-4">Download</h2>
           <div class="flex items-end">
-            <span
-              id="download-mbps"
-              class="text-3xl font-bold text-primary"
+            <span id="download-mbps" class="text-3xl font-bold text-primary"
               >-</span
             >
             <span class="text-gray-500 ml-2">Mbps</span>
@@ -98,9 +91,7 @@
         >
           <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload</h2>
           <div class="flex items-end">
-            <span
-              id="upload-mbps"
-              class="text-3xl font-bold text-secondary"
+            <span id="upload-mbps" class="text-3xl font-bold text-secondary"
               >-</span
             >
             <span class="text-gray-500 ml-2">Mbps</span>
@@ -185,14 +176,21 @@
             updateProgress(80);
             break;
           case testStatus.COMPLETED:
-            document.getElementById("current-test").textContent = "Tes Selesai!";
+            document.getElementById("current-test").textContent =
+              "Tes Selesai!";
             updateProgress(100);
             document.getElementById("start-btn").classList.add("hidden");
             document.getElementById("retest-btn").classList.remove("hidden");
             break;
         }
       }
-      function animateValue(elementId, targetValue, duration = 2000, suffix = "", isPing = false) {
+      function animateValue(
+        elementId,
+        targetValue,
+        duration = 2000,
+        suffix = "",
+        isPing = false
+      ) {
         const element = document.getElementById(elementId);
         const startValue = 0;
         const increment = targetValue / (duration / 16);
@@ -238,11 +236,17 @@
 
           document.getElementById("conversion-value").innerHTML = `
             <div class="fade-in">
-              <p><strong>Download:</strong> ${dlData.download_mbps.toFixed(2)} Mbps ≈ ${mbpsToMBs(dlData.download_mbps)} MB/s</p>
-              <p><strong>Upload:</strong> ${ulData.upload_mbps.toFixed(2)} Mbps ≈ ${mbpsToMBs(ulData.upload_mbps)} MB/s</p>
+              <p><strong>Download:</strong> ${dlData.download_mbps.toFixed(
+                2
+              )} Mbps ≈ ${mbpsToMBs(dlData.download_mbps)} MB/s</p>
+              <p><strong>Upload:</strong> ${ulData.upload_mbps.toFixed(
+                2
+              )} Mbps ≈ ${mbpsToMBs(ulData.upload_mbps)} MB/s</p>
               <p><strong>Ping:</strong> ${Math.round(pingData.ping_ms)} ms</p>
             </div>`;
-          document.getElementById("conversion-value").classList.remove("hidden");
+          document
+            .getElementById("conversion-value")
+            .classList.remove("hidden");
 
           setTestStatus(testStatus.COMPLETED);
         } catch (e) {
@@ -253,7 +257,9 @@
         }
       }
 
-      document.getElementById("start-btn").addEventListener("click", runSpeedtest);
+      document
+        .getElementById("start-btn")
+        .addEventListener("click", runSpeedtest);
       document.getElementById("retest-btn").addEventListener("click", () => {
         document.getElementById("download-mbps").textContent = "-";
         document.getElementById("upload-mbps").textContent = "-";
