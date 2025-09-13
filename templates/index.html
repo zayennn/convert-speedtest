@@ -21,96 +21,44 @@
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
-  <body
-    class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4"
-  >
+  <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
     <div class="container max-w-4xl mx-auto">
-      <!-- Judul -->
-      <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-2">
-        Speedtest Sederhana
-      </h1>
-      <p class="text-center text-gray-600 mb-8">
-        Tes kecepatan internet Anda dengan mudah
-      </p>
-
-      <!-- Progress bar -->
+      <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-2">Speedtest Sederhana</h1>
+      <p class="text-center text-gray-600 mb-8">Tes kecepatan internet Anda dengan mudah</p>
       <div class="bg-gray-200 rounded-full h-2.5 mb-8 mx-auto max-w-xl">
-        <div
-          id="test-progress"
-          class="test-progress bg-primary rounded-full h-2.5"
-          style="width: 0%"
-        ></div>
+        <div id="test-progress" class="test-progress bg-primary rounded-full h-2.5" style="width: 0%"></div>
       </div>
-
-      <!-- Container untuk speedometer -->
       <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2
-          id="current-test"
-          class="text-2xl font-semibold text-center text-gray-700 mb-6"
-        >
-          Siap untuk memulai tes
-        </h2>
-
+        <h2 id="current-test" class="text-2xl font-semibold text-center text-gray-700 mb-6">Siap untuk memulai tes</h2>
         <div class="gauge-container mb-6">
           <div class="gauge-background"></div>
-          <div
-            id="needle"
-            class="needle"
-            style="transform: translateX(-50%) rotate(-90deg)"
-          ></div>
+          <div id="needle" class="needle" style="transform: translateX(-50%) rotate(-90deg)"></div>
           <div class="gauge-center"></div>
         </div>
-
         <div class="text-center">
-          <div id="speed-value" class="text-5xl font-bold text-primary mb-2">
-            0
-          </div>
+          <div id="speed-value" class="text-5xl font-bold text-primary mb-2">0</div>
           <div id="speed-unit" class="text-xl text-gray-600">Mbps</div>
           <div id="conversion-value" class="mt-4 text-gray-600 hidden"></div>
         </div>
       </div>
-
-      <!-- Container untuk hasil speedtest -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <!-- Card Download -->
-        <div
-          id="download-card"
-          class="bg-gray-100 rounded-xl shadow p-4 opacity-70"
-        >
+        <div id="download-card" class="bg-gray-100 rounded-xl shadow p-4 opacity-70">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">Download</h2>
           <div class="flex items-end">
-            <span id="download-mbps" class="text-3xl font-bold text-primary"
-              >-</span
-            >
+            <span id="download-mbps" class="text-3xl font-bold text-primary">-</span>
             <span class="text-gray-500 ml-2">Mbps</span>
           </div>
-          <div class="mt-2 text-sm text-gray-600">
-            <span id="download-mbs">-</span> MB/s
-          </div>
+          <div class="mt-2 text-sm text-gray-600"><span id="download-mbs">-</span> MB/s</div>
         </div>
-
-        <!-- Card Upload -->
-        <div
-          id="upload-card"
-          class="bg-gray-100 rounded-xl shadow p-4 opacity-70"
-        >
+        <div id="upload-card" class="bg-gray-100 rounded-xl shadow p-4 opacity-70">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload</h2>
           <div class="flex items-end">
-            <span id="upload-mbps" class="text-3xl font-bold text-secondary"
-              >-</span
-            >
+            <span id="upload-mbps" class="text-3xl font-bold text-secondary">-</span>
             <span class="text-gray-500 ml-2">Mbps</span>
           </div>
-          <div class="mt-2 text-sm text-gray-600">
-            <span id="upload-mbs">-</span> MB/s
-          </div>
+          <div class="mt-2 text-sm text-gray-600"><span id="upload-mbs">-</span> MB/s</div>
         </div>
-
-        <!-- Card Ping -->
-        <div
-          id="ping-card"
-          class="bg-gray-100 rounded-xl shadow p-4 opacity-70"
-        >
+        <div id="ping-card" class="bg-gray-100 rounded-xl shadow p-4 opacity-70">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">Ping</h2>
           <div class="flex items-end">
             <span id="ping-ms" class="text-3xl font-bold text-accent">-</span>
@@ -118,324 +66,13 @@
           </div>
         </div>
       </div>
-
-      <!-- Tombol Tes Ulang -->
       <div class="text-center">
-        <button
-          id="start-btn"
-          class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors pulse"
-        >
-          Mulai Tes
-        </button>
-        <button
-          id="retest-btn"
-          class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full transition-colors hidden"
-        >
-          Tes Ulang
-        </button>
+        <button id="start-btn" class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors pulse">Mulai Tes</button>
+        <button id="retest-btn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full transition-colors hidden">Tes Ulang</button>
       </div>
     </div>
-
     <script>
-      // Status tes
-      const testStatus = {
-        NOT_STARTED: "not_started",
-        TESTING_PING: "testing_ping",
-        TESTING_DOWNLOAD: "testing_download",
-        TESTING_UPLOAD: "testing_upload",
-        COMPLETED: "completed",
-      };
-
-      let currentStatus = testStatus.NOT_STARTED;
-
-      // Fungsi untuk mengonversi Mbps ke MB/s
-      function mbpsToMBs(mbps) {
-        return (mbps / 8).toFixed(2);
-      }
-
-      // Fungsi untuk mengupdate needle speedometer
-      function updateNeedle(value, maxValue, unit) {
-        const needle = document.getElementById("needle");
-        const degrees = (value / maxValue) * 180 - 90; // -90° to 90°
-        needle.style.transform = `translateX(-50%) rotate(${degrees}deg)`;
-
-        document.getElementById("speed-value").textContent = value.toFixed(2);
-        document.getElementById("speed-unit").textContent = unit;
-      }
-
-      // Fungsi untuk mengupdate progress bar
-      function updateProgress(percentage) {
-        document.getElementById("test-progress").style.width = `${percentage}%`;
-      }
-
-      // Fungsi untuk mengatur tes
-      function setTestStatus(status) {
-        currentStatus = status;
-
-        // Reset semua card
-        document
-          .getElementById("download-card")
-          .classList.remove(
-            "bg-white",
-            "opacity-100",
-            "border-2",
-            "border-primary"
-          );
-        document
-          .getElementById("upload-card")
-          .classList.remove(
-            "bg-white",
-            "opacity-100",
-            "border-2",
-            "border-secondary"
-          );
-        document
-          .getElementById("ping-card")
-          .classList.remove(
-            "bg-white",
-            "opacity-100",
-            "border-2",
-            "border-accent"
-          );
-
-        document
-          .getElementById("download-card")
-          .classList.add("bg-gray-100", "opacity-70");
-        document
-          .getElementById("upload-card")
-          .classList.add("bg-gray-100", "opacity-70");
-        document
-          .getElementById("ping-card")
-          .classList.add("bg-gray-100", "opacity-70");
-
-        // Atur status tes saat ini
-        switch (status) {
-          case testStatus.NOT_STARTED:
-            document.getElementById("current-test").textContent =
-              "Siap untuk memulai tes";
-            document.getElementById("conversion-value").classList.add("hidden");
-            updateNeedle(0, 100, "Mbps");
-            updateProgress(0);
-            break;
-
-          case testStatus.TESTING_PING:
-            document.getElementById("current-test").textContent =
-              "Sedang mengukur Ping...";
-            document
-              .getElementById("ping-card")
-              .classList.remove("bg-gray-100", "opacity-70");
-            document
-              .getElementById("ping-card")
-              .classList.add(
-                "bg-white",
-                "opacity-100",
-                "border-2",
-                "border-accent"
-              );
-            updateProgress(20);
-            break;
-
-          case testStatus.TESTING_DOWNLOAD:
-            document.getElementById("current-test").textContent =
-              "Sedang mengukur Download...";
-            document
-              .getElementById("download-card")
-              .classList.remove("bg-gray-100", "opacity-70");
-            document
-              .getElementById("download-card")
-              .classList.add(
-                "bg-white",
-                "opacity-100",
-                "border-2",
-                "border-primary"
-              );
-            updateProgress(50);
-            break;
-
-          case testStatus.TESTING_UPLOAD:
-            document.getElementById("current-test").textContent =
-              "Sedang mengukur Upload...";
-            document
-              .getElementById("upload-card")
-              .classList.remove("bg-gray-100", "opacity-70");
-            document
-              .getElementById("upload-card")
-              .classList.add(
-                "bg-white",
-                "opacity-100",
-                "border-2",
-                "border-secondary"
-              );
-            updateProgress(80);
-            break;
-
-          case testStatus.COMPLETED:
-            document.getElementById("current-test").textContent =
-              "Tes Selesai!";
-            document
-              .getElementById("conversion-value")
-              .classList.remove("hidden");
-            updateProgress(100);
-            document.getElementById("start-btn").classList.add("hidden");
-            document.getElementById("retest-btn").classList.remove("hidden");
-            break;
-        }
-      }
-
-      // Fungsi animasi angka dari 0 ke nilai target
-      function animateValue(
-        elementId,
-        targetValue,
-        duration = 2000,
-        suffix = "",
-        isPing = false
-      ) {
-        const element = document.getElementById(elementId);
-        const startValue = 0;
-        const increment = targetValue / (duration / 16); // 16ms per frame (≈60fps)
-        let currentValue = startValue;
-
-        const timer = setInterval(() => {
-          currentValue += increment;
-          if (currentValue >= targetValue) {
-            clearInterval(timer);
-            currentValue = targetValue;
-          }
-          element.textContent = isPing
-            ? Math.round(currentValue)
-            : currentValue.toFixed(2);
-          if (suffix) element.textContent += suffix;
-        }, 16);
-      }
-
-      // Simulasi tes ping
-      async function testPing() {
-        setTestStatus(testStatus.TESTING_PING);
-
-        // Simulasi delay tes ping
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        // Nilai acak untuk simulasi (dalam kondisi nyata ini dari backend)
-        const pingValue = 22 + Math.random() * 10;
-
-        // Update speedometer untuk ping (skala berbeda)
-        updateNeedle(pingValue, 100, "ms");
-
-        // Animasikan nilai ping
-        animateValue("ping-ms", pingValue, 1000, "", true);
-
-        return pingValue;
-      }
-
-      // Simulasi tes download
-      async function testDownload() {
-        setTestStatus(testStatus.TESTING_DOWNLOAD);
-
-        // Simulasi delay tes download
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-
-        // Nilai acak untuk simulasi (dalam kondisi nyata ini dari backend)
-        const downloadValue = 45 + Math.random() * 30;
-
-        // Update speedometer untuk download
-        updateNeedle(downloadValue, 100, "Mbps");
-
-        // Animasikan nilai download
-        animateValue("download-mbps", downloadValue);
-
-        // Hitung dan tampilkan nilai MB/s
-        const downloadMBs = mbpsToMBs(downloadValue);
-        document.getElementById(
-          "download-mbs"
-        ).textContent = `≈ ${downloadMBs}`;
-
-        return downloadValue;
-      }
-
-      // Simulasi tes upload
-      async function testUpload() {
-        setTestStatus(testStatus.TESTING_UPLOAD);
-
-        // Simulasi delay tes upload
-        await new Promise((resolve) => setTimeout(resolve, 2500));
-
-        // Nilai acak untuk simulasi (dalam kondisi nyata ini dari backend)
-        const uploadValue = 10 + Math.random() * 15;
-
-        // Update speedometer untuk upload
-        updateNeedle(uploadValue, 50, "Mbps");
-
-        // Animasikan nilai upload
-        animateValue("upload-mbps", uploadValue);
-
-        // Hitung dan tampilkan nilai MB/s
-        const uploadMBs = mbpsToMBs(uploadValue);
-        document.getElementById("upload-mbs").textContent = `≈ ${uploadMBs}`;
-
-        return uploadValue;
-      }
-
-      // Fungsi untuk memanggil endpoint backend (simulasi)
-      async function runSpeedtest() {
-        // Nonaktifkan tombol mulai
-        document.getElementById("start-btn").disabled = true;
-        document.getElementById("start-btn").classList.remove("pulse");
-
-        try {
-          // Jalankan tes satu per satu
-          const ping = await testPing();
-          const download = await testDownload();
-          const upload = await testUpload();
-
-          // Tampilkan hasil konversi
-          const downloadMBs = mbpsToMBs(download);
-          const uploadMBs = mbpsToMBs(upload);
-          document.getElementById("conversion-value").innerHTML = `
-                    <div class="fade-in">
-                        <p><strong>Download:</strong> ${download.toFixed(
-                          2
-                        )} Mbps ≈ ${downloadMBs} MB/s</p>
-                        <p><strong>Upload:</strong> ${upload.toFixed(
-                          2
-                        )} Mbps ≈ ${uploadMBs} MB/s</p>
-                        <p><strong>Ping:</strong> ${Math.round(ping)} ms</p>
-                    </div>
-                `;
-
-          // Tandai tes selesai
-          setTestStatus(testStatus.COMPLETED);
-        } catch (error) {
-          console.error("Error:", error);
-          alert("Gagal melakukan tes kecepatan. Silakan coba lagi.");
-          setTestStatus(testStatus.NOT_STARTED);
-          document.getElementById("start-btn").disabled = false;
-          document.getElementById("start-btn").classList.add("pulse");
-        }
-      }
-
-      // Event listener untuk tombol
-      document
-        .getElementById("start-btn")
-        .addEventListener("click", runSpeedtest);
-      document
-        .getElementById("retest-btn")
-        .addEventListener("click", function () {
-          // Reset semua nilai
-          document.getElementById("download-mbps").textContent = "-";
-          document.getElementById("upload-mbps").textContent = "-";
-          document.getElementById("ping-ms").textContent = "-";
-          document.getElementById("download-mbs").textContent = "-";
-          document.getElementById("upload-mbs").textContent = "-";
-
-          // Sembunyikan tombol tes ulang, tampilkan tombol mulai
-          document.getElementById("retest-btn").classList.add("hidden");
-          document.getElementById("start-btn").classList.remove("hidden");
-          document.getElementById("start-btn").disabled = false;
-          document.getElementById("start-btn").classList.add("pulse");
-
-          // Reset status
-          setTestStatus(testStatus.NOT_STARTED);
-        });
+      const testStatus={NOT_STARTED:"not_started",TESTING_PING:"testing_ping",TESTING_DOWNLOAD:"testing_download",TESTING_UPLOAD:"testing_upload",COMPLETED:"completed"};let currentStatus=testStatus.NOT_STARTED;function mbpsToMBs(mbps){return(mbps/8).toFixed(2)}function updateNeedle(value,maxValue,unit){const needle=document.getElementById("needle");const degrees=(value/maxValue)*180-90;needle.style.transform=`translateX(-50%) rotate(${degrees}deg)`;document.getElementById("speed-value").textContent=value.toFixed(2);document.getElementById("speed-unit").textContent=unit}function updateProgress(percentage){document.getElementById("test-progress").style.width=`${percentage}%`}function setTestStatus(status){currentStatus=status;document.getElementById("download-card").classList.remove("bg-white","opacity-100","border-2","border-primary");document.getElementById("upload-card").classList.remove("bg-white","opacity-100","border-2","border-secondary");document.getElementById("ping-card").classList.remove("bg-white","opacity-100","border-2","border-accent");document.getElementById("download-card").classList.add("bg-gray-100","opacity-70");document.getElementById("upload-card").classList.add("bg-gray-100","opacity-70");document.getElementById("ping-card").classList.add("bg-gray-100","opacity-70");switch(status){case testStatus.NOT_STARTED:document.getElementById("current-test").textContent="Siap untuk memulai tes";document.getElementById("conversion-value").classList.add("hidden");updateNeedle(0,100,"Mbps");updateProgress(0);break;case testStatus.TESTING_PING:document.getElementById("current-test").textContent="Sedang mengukur Ping...";document.getElementById("ping-card").classList.remove("bg-gray-100","opacity-70");document.getElementById("ping-card").classList.add("bg-white","opacity-100","border-2","border-accent");updateProgress(20);break;case testStatus.TESTING_DOWNLOAD:document.getElementById("current-test").textContent="Sedang mengukur Download...";document.getElementById("download-card").classList.remove("bg-gray-100","opacity-70");document.getElementById("download-card").classList.add("bg-white","opacity-100","border-2","border-primary");updateProgress(50);break;case testStatus.TESTING_UPLOAD:document.getElementById("current-test").textContent="Sedang mengukur Upload...";document.getElementById("upload-card").classList.remove("bg-gray-100","opacity-70");document.getElementById("upload-card").classList.add("bg-white","opacity-100","border-2","border-secondary");updateProgress(80);break;case testStatus.COMPLETED:document.getElementById("current-test").textContent="Tes Selesai!";document.getElementById("conversion-value").classList.remove("hidden");updateProgress(100);document.getElementById("start-btn").classList.add("hidden");document.getElementById("retest-btn").classList.remove("hidden");break}}function animateValue(elementId,targetValue,duration=2000,suffix="",isPing=false){const element=document.getElementById(elementId);const startValue=0;const increment=targetValue/(duration/16);let currentValue=startValue;const timer=setInterval(()=>{currentValue+=increment;if(currentValue>=targetValue){clearInterval(timer);currentValue=targetValue}element.textContent=isPing?Math.round(currentValue):currentValue.toFixed(2);if(suffix)element.textContent+=suffix},16)}async function runSpeedtest(){document.getElementById("start-btn").disabled=true;document.getElementById("start-btn").classList.remove("pulse");try{setTestStatus(testStatus.TESTING_PING);const response=await fetch("/speedtest");const data=await response.json();if(data.error)throw new Error(data.error);setTestStatus(testStatus.TESTING_DOWNLOAD);updateNeedle(data.download_mbps,100,"Mbps");animateValue("download-mbps",data.download_mbps);document.getElementById("download-mbs").textContent=`≈ ${mbpsToMBs(data.download_mbps)}`;setTestStatus(testStatus.TESTING_UPLOAD);updateNeedle(data.upload_mbps,50,"Mbps");animateValue("upload-mbps",data.upload_mbps);document.getElementById("upload-mbs").textContent=`≈ ${mbpsToMBs(data.upload_mbps)}`;setTestStatus(testStatus.TESTING_PING);updateNeedle(data.ping_ms,100,"ms");animateValue("ping-ms",data.ping_ms,1000,"",true);document.getElementById("conversion-value").innerHTML=`<div class="fade-in"><p><strong>Download:</strong> ${data.download_mbps.toFixed(2)} Mbps ≈ ${mbpsToMBs(data.download_mbps)} MB/s</p><p><strong>Upload:</strong> ${data.upload_mbps.toFixed(2)} Mbps ≈ ${mbpsToMBs(data.upload_mbps)} MB/s</p><p><strong>Ping:</strong> ${Math.round(data.ping_ms)} ms</p></div>`;setTestStatus(testStatus.COMPLETED)}catch(error){console.error("Error:",error);alert("Gagal melakukan tes kecepatan. Silakan coba lagi.");setTestStatus(testStatus.NOT_STARTED);document.getElementById("start-btn").disabled=false;document.getElementById("start-btn").classList.add("pulse")}}document.getElementById("start-btn").addEventListener("click",runSpeedtest);document.getElementById("retest-btn").addEventListener("click",function(){document.getElementById("download-mbps").textContent="-";document.getElementById("upload-mbps").textContent="-";document.getElementById("ping-ms").textContent="-";document.getElementById("download-mbs").textContent="-";document.getElementById("upload-mbs").textContent="-";document.getElementById("retest-btn").classList.add("hidden");document.getElementById("start-btn").classList.remove("hidden");document.getElementById("start-btn").disabled=false;document.getElementById("start-btn").classList.add("pulse");setTestStatus(testStatus.NOT_STARTED)});
     </script>
   </body>
 </html>
