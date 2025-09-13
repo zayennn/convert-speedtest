@@ -87,14 +87,12 @@ async function runSpeedtest() {
   document.getElementById("start-btn").disabled = true;
   document.getElementById("start-btn").classList.remove("pulse");
   try {
-    // PING
     setTestStatus(testStatus.TESTING_PING);
     const pingRes = await fetch("/speedtest/ping");
     const pingData = await pingRes.json();
     updateNeedle(pingData.ping_ms, 100, "ms");
     animateValue("ping-ms", pingData.ping_ms, 1000, "", true);
 
-    // DOWNLOAD
     setTestStatus(testStatus.TESTING_DOWNLOAD);
     const dlRes = await fetch("/speedtest/download");
     const dlData = await dlRes.json();
@@ -103,7 +101,6 @@ async function runSpeedtest() {
     document.getElementById("download-mbs").textContent =
       "≈ " + mbpsToMBs(dlData.download_mbps);
 
-    // UPLOAD
     setTestStatus(testStatus.TESTING_UPLOAD);
     const ulRes = await fetch("/speedtest/upload");
     const ulData = await ulRes.json();
@@ -112,12 +109,10 @@ async function runSpeedtest() {
     document.getElementById("upload-mbs").textContent =
       "≈ " + mbpsToMBs(ulData.upload_mbps);
 
-    // PROVIDER INFO
     setTestStatus(testStatus.TESTING_PROVIDER);
     const provRes = await fetch("/speedtest/provider");
     const provData = await provRes.json();
 
-    // TAMPILKAN SEMUA HASIL
     document.getElementById("conversion-value").innerHTML = `
       <div class="fade-in">
         <p><strong>Download:</strong> ${dlData.download_mbps.toFixed(
@@ -143,7 +138,6 @@ async function runSpeedtest() {
   }
 }
 
-// Event Listener
 document.getElementById("start-btn").addEventListener("click", runSpeedtest);
 
 document.getElementById("retest-btn").addEventListener("click", () => {
