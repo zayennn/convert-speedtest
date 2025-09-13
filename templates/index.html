@@ -86,12 +86,10 @@
     </div>
 
     <script>
-      // Fungsi untuk mengonversi Mbps ke MB/s
       function mbpsToMBs(mbps) {
         return (mbps / 8).toFixed(2);
       }
 
-      // Fungsi animasi angka dari 0 ke nilai target
       function animateValue(
         elementId,
         targetValue,
@@ -100,7 +98,7 @@
       ) {
         const element = document.getElementById(elementId);
         const startValue = 0;
-        const increment = targetValue / (duration / 16); // 16ms per frame (≈60fps)
+        const increment = targetValue / (duration / 16);
         let currentValue = startValue;
 
         const timer = setInterval(() => {
