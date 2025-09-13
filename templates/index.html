@@ -28,7 +28,9 @@
         Speedtest Sederhana
       </h1>
 
+      <!-- Container hasil speedtest -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Download -->
         <div
           class="bg-white rounded-xl shadow-lg p-6 transition-transform hover:scale-105"
         >
@@ -44,6 +46,7 @@
           </div>
         </div>
 
+        <!-- Upload -->
         <div
           class="bg-white rounded-xl shadow-lg p-6 transition-transform hover:scale-105"
         >
@@ -59,6 +62,7 @@
           </div>
         </div>
 
+        <!-- Ping -->
         <div
           class="bg-white rounded-xl shadow-lg p-6 transition-transform hover:scale-105"
         >
@@ -70,6 +74,7 @@
         </div>
       </div>
 
+      <!-- Tombol Tes Ulang -->
       <div class="text-center">
         <button
           id="retest-btn"
@@ -81,10 +86,12 @@
     </div>
 
     <script>
+      // Konversi Mbps → MB/s
       function mbpsToMBs(mbps) {
         return (mbps / 8).toFixed(2);
       }
 
+      // Animasi angka
       function animateValue(
         elementId,
         targetValue,
@@ -106,20 +113,21 @@
         }, 16);
       }
 
+      // Tampilkan hasil
       function displaySpeedtestData(data) {
         animateValue("download-mbps", data.download_mbps);
         animateValue("upload-mbps", data.upload_mbps);
         animateValue("ping-ms", data.ping_ms, 1000, "");
 
-        const downloadMBs = mbpsToMBs(data.download_mbps);
-        const uploadMBs = mbpsToMBs(data.upload_mbps);
-
-        document.getElementById(
-          "download-mbs"
-        ).textContent = `≈ ${downloadMBs}`;
-        document.getElementById("upload-mbs").textContent = `≈ ${uploadMBs}`;
+        document.getElementById("download-mbs").textContent = `≈ ${mbpsToMBs(
+          data.download_mbps
+        )}`;
+        document.getElementById("upload-mbs").textContent = `≈ ${mbpsToMBs(
+          data.upload_mbps
+        )}`;
       }
 
+      // Panggil backend Flask
       async function runSpeedtest() {
         const button = document.getElementById("retest-btn");
         button.disabled = true;
@@ -129,6 +137,7 @@
           const response = await fetch("/speedtest");
           const data = await response.json();
 
+          // Reset dulu
           document.getElementById("download-mbps").textContent = "0";
           document.getElementById("upload-mbps").textContent = "0";
           document.getElementById("ping-ms").textContent = "0";
@@ -147,19 +156,15 @@
         }
       }
 
+      // Auto run saat pertama kali load
+      document.addEventListener("DOMContentLoaded", () => {
+        runSpeedtest();
+      });
+
+      // Klik tombol = tes ulang
       document
         .getElementById("retest-btn")
         .addEventListener("click", runSpeedtest);
-
-      const sampleData = {
-        download_mbps: 45.23,
-        upload_mbps: 12.5,
-        ping_ms: 22,
-      };
-
-      document.addEventListener("DOMContentLoaded", () => {
-        displaySpeedtestData(sampleData);
-      });
     </script>
   </body>
 </html>
