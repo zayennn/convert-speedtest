@@ -86,12 +86,10 @@
     </div>
 
     <script>
-      // Konversi Mbps → MB/s
       function mbpsToMBs(mbps) {
         return (mbps / 8).toFixed(2);
       }
 
-      // Animasi angka
       function animateValue(
         elementId,
         targetValue,
@@ -113,7 +111,6 @@
         }, 16);
       }
 
-      // Tampilkan hasil
       function displaySpeedtestData(data) {
         animateValue("download-mbps", data.download_mbps);
         animateValue("upload-mbps", data.upload_mbps);
