@@ -160,22 +160,17 @@
         }
       }
 
-      // Event listener untuk tombol Tes Ulang
       document
         .getElementById("retest-btn")
         .addEventListener("click", runSpeedtest);
 
-      // Data contoh untuk demonstrasi
       const sampleData = {
         download_mbps: 45.23,
         upload_mbps: 12.5,
         ping_ms: 22,
       };
 
-      // Tampilkan data contoh saat halaman dimuat (untuk demo)
       document.addEventListener("DOMContentLoaded", () => {
-        // Untuk demo, kita akan menggunakan data contoh
-        // Di implementasi nyata, ini akan dipanggil dari backend
         displaySpeedtestData(sampleData);
       });
     </script>
