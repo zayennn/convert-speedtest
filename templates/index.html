@@ -1,137 +1,104 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Speedtest Sederhana</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#3B82F6",
-              secondary: "#10B981",
-              accent: "#F59E0B",
-            },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speedtest Sederhana</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#3B82F6",
+            secondary: "#10B981",
+            accent: "#F59E0B",
           },
         },
-      };
-    </script>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-  </head>
-  <body
-    class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4"
-  >
-    <div class="container max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-2">
-        Speedtest Sederhana
-      </h1>
-      <p class="text-center text-gray-600 mb-8">
-        Tes kecepatan internet Anda dengan mudah
-      </p>
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
 
-      <div class="bg-gray-200 rounded-full h-2.5 mb-8 mx-auto max-w-xl">
-        <div
-          id="test-progress"
-          class="test-progress bg-primary rounded-full h-2.5"
-          style="width: 0%"
-        ></div>
-      </div>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+  <div class="container max-w-4xl mx-auto">
+    <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-2">
+      Speedtest Sederhana
+    </h1>
+    <p class="text-center text-gray-600 mb-8">
+      Tes kecepatan internet Anda dengan mudah
+    </p>
 
-      <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2
-          id="current-test"
-          class="text-2xl font-semibold text-center text-gray-700 mb-6"
-        >
-          Siap untuk memulai tes
-        </h2>
+    <div class="bg-gray-200 rounded-full h-2.5 mb-8 mx-auto max-w-xl">
+      <div id="test-progress" class="test-progress bg-primary rounded-full h-2.5" style="width: 0%"></div>
+    </div>
 
-        <div class="gauge-container mb-6">
-          <div class="gauge-background"></div>
-          <div
-            id="needle"
-            class="needle"
-            style="transform: translateX(-50%) rotate(-90deg)"
-          ></div>
-          <div class="gauge-center"></div>
-        </div>
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <h2 id="current-test" class="text-2xl font-semibold text-center text-gray-700 mb-6">
+        Siap untuk memulai tes
+      </h2>
 
-        <div class="text-center">
-          <div id="speed-value" class="text-5xl font-bold text-primary mb-2">
-            0
-          </div>
-          <div id="speed-unit" class="text-xl text-gray-600">Mbps</div>
-          <div id="conversion-value" class="mt-4 text-gray-600 hidden"></div>
-          <div
-            id="provider-info"
-            class="text-center text-gray-600 mt-4 hidden"
-          ></div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div
-          id="download-card"
-          class="bg-gray-100 rounded-xl shadow p-4 opacity-70"
-        >
-          <h2 class="text-xl font-semibold text-gray-700 mb-4">Download</h2>
-          <div class="flex items-end">
-            <span id="download-mbps" class="text-3xl font-bold text-primary"
-              >-</span
-            >
-            <span class="text-gray-500 ml-2">Mbps</span>
-          </div>
-          <div class="mt-2 text-sm text-gray-600">
-            <span id="download-mbs">-</span> MB/s
-          </div>
-        </div>
-        <div
-          id="upload-card"
-          class="bg-gray-100 rounded-xl shadow p-4 opacity-70"
-        >
-          <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload</h2>
-          <div class="flex items-end">
-            <span id="upload-mbps" class="text-3xl font-bold text-secondary"
-              >-</span
-            >
-            <span class="text-gray-500 ml-2">Mbps</span>
-          </div>
-          <div class="mt-2 text-sm text-gray-600">
-            <span id="upload-mbs">-</span> MB/s
-          </div>
-        </div>
-        <div
-          id="ping-card"
-          class="bg-gray-100 rounded-xl shadow p-4 opacity-70"
-        >
-          <h2 class="text-xl font-semibold text-gray-700 mb-4">Ping</h2>
-          <div class="flex items-end">
-            <span id="ping-ms" class="text-3xl font-bold text-accent">-</span>
-            <span class="text-gray-500 ml-2">ms</span>
-          </div>
-        </div>
+      <div class="gauge-container mb-6">
+        <div class="gauge-background"></div>
+        <div id="needle" class="needle" style="transform: translateX(-50%) rotate(-90deg)"></div>
+        <div class="gauge-center"></div>
       </div>
 
       <div class="text-center">
-        <button
-          id="start-btn"
-          class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors pulse"
-        >
-          Mulai Tes
-        </button>
-        <button
-          id="retest-btn"
-          class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full transition-colors hidden"
-        >
-          Tes Ulang
-        </button>
+        <div id="speed-value" class="text-5xl font-bold text-primary mb-2">
+          0
+        </div>
+        <div id="speed-unit" class="text-xl text-gray-600">Mbps</div>
+        <div id="conversion-value" class="mt-4 text-gray-600 hidden"></div>
+        <div id="provider-info" class="text-center text-gray-600 mt-4 hidden"></div>
       </div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-  </body>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div id="download-card" class="bg-gray-100 rounded-xl shadow p-4 opacity-70">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Download</h2>
+        <div class="flex items-end">
+          <span id="download-mbps" class="text-3xl font-bold text-primary">-</span>
+          <span class="text-gray-500 ml-2">Mbps</span>
+        </div>
+        <div class="mt-2 text-sm text-gray-600">
+          <span id="download-mbs">-</span> MB/s
+        </div>
+      </div>
+      <div id="upload-card" class="bg-gray-100 rounded-xl shadow p-4 opacity-70">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload</h2>
+        <div class="flex items-end">
+          <span id="upload-mbps" class="text-3xl font-bold text-secondary">-</span>
+          <span class="text-gray-500 ml-2">Mbps</span>
+        </div>
+        <div class="mt-2 text-sm text-gray-600">
+          <span id="upload-mbs">-</span> MB/s
+        </div>
+      </div>
+      <div id="ping-card" class="bg-gray-100 rounded-xl shadow p-4 opacity-70">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Ping</h2>
+        <div class="flex items-end">
+          <span id="ping-ms" class="text-3xl font-bold text-accent">-</span>
+          <span class="text-gray-500 ml-2">ms</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button id="start-btn"
+        class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors pulse">
+        Mulai Tes
+      </button>
+      <button id="retest-btn"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full transition-colors hidden">
+        Tes Ulang
+      </button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
 </html>
