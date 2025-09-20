@@ -116,16 +116,15 @@ async function runSpeedtest() {
     document.getElementById("conversion-value").innerHTML = `
       <div class="fade-in">
         <p><strong>Download:</strong> ${dlData.download_mbps.toFixed(
-          2
-        )} Mbps ≈ ${mbpsToMBs(dlData.download_mbps)} MB/s</p>
+      2
+    )} Mbps ≈ ${mbpsToMBs(dlData.download_mbps)} MB/s</p>
         <p><strong>Upload:</strong> ${ulData.upload_mbps.toFixed(
-          2
-        )} Mbps ≈ ${mbpsToMBs(ulData.upload_mbps)} MB/s</p>
+      2
+    )} Mbps ≈ ${mbpsToMBs(ulData.upload_mbps)} MB/s</p>
         <p><strong>Ping:</strong> ${Math.round(pingData.ping_ms)} ms</p>
         <p><strong>ISP:</strong> ${provData.isp}</p>
-        <p><strong>Server:</strong> ${provData.server.name}, ${
-      provData.server.country
-    } (${provData.server.sponsor})</p>
+        <p><strong>Server:</strong> ${provData.server.name}, ${provData.server.country
+      } (${provData.server.sponsor})</p>
       </div>`;
     document.getElementById("conversion-value").classList.remove("hidden");
 
