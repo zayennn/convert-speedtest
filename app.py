@@ -29,7 +29,6 @@ def test_download():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @app.route("/speedtest/upload")
 def test_upload():
     try:
