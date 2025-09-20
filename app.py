@@ -18,7 +18,6 @@ def test_ping():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @app.route("/speedtest/download")
 def test_download():
     try:
